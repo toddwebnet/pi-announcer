@@ -4,6 +4,13 @@ Tested on Raspberry Pi 4 with 64 bit Rasberry pi os (with desktop)
 sudo apt install -y php espeak
 ```
 
+run composer
+```
+cd ~/pi-announcer/src/web
+composer install
+```
+
+
 edit the following files to update config vars
 ```
 src/cron/cron_speaker
