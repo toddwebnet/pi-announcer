@@ -10,6 +10,16 @@ cd ~/pi-announcer/src/web
 composer install
 ```
 
+setup web app
+```
+cd ~/pi-announcer/src/web
+cp .env.example .env
+php artisan key:generate
+nano .env
+#  add this line to env (with correct path)
+ANNOUNCER_DROP_PATH=/home/pi/pi-announcer/drops/
+```
+
 
 edit the following files to update config vars
 ```
