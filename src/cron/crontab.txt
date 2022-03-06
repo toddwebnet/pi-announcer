@@ -1,0 +1,5 @@
+# Run as root
+* * * * * php /root/pi-announcer/src/cron/cron_speaker.php >/dev/null
+
+# Run as user (jtodd)
+* * * * * php /home/jtodd/projects/pi-announcer/src/cron/run_web_server.php >/dev/null

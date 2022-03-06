@@ -26,10 +26,11 @@ function getDropFiles()
     quitIfDropsDontExist();
     $files = [];
     foreach (scandir(DROP_FOLDER) as $file) {
-        $dropFolder = DROP_FOLDER;
-        if (substr($dropFolder, -1) == '/') {
-            $dropFolder = substr($dropFolder, 0, strlen($dropFolder) - 1);
-        }
+        $dropFolder = realpath(DROP_FOLDER);
+
+//        if (substr($dropFolder, -1) == '/') {
+//            $dropFolder = substr($dropFolder, 0, strlen($dropFolder) - 1);
+//        }
 
         $fullPath = "{$dropFolder}/$file";
         if (substr($file, 0, 1) == '.' || is_dir($fullPath)) {
@@ -58,7 +59,7 @@ function quitIfRunningAlready()
         // print "\nalready running, don't check\n\n";
         return;
     }
-    $pids = getRunningPids();
+    $pids = getRunningPids($fileName);
     if (in_array($filePid, $pids)) {
         print "\nrunning somewhere else, quit now\n\n";
         exit;
@@ -70,7 +71,7 @@ function quitIfRunningAlready()
 
 }
 
-function getRunningPids()
+function getRunningPids($command)
 {
 
     $pids  = [];
@@ -80,13 +81,14 @@ function getRunningPids()
 
     $headings = preg_split('/\s+/', $lines[0]);
     for ($x = 1; $x < count($lines); $x++) {
-        $values = preg_split('/\s+/', $lines[$x]);
-        $row    = [];
-        foreach ($headings as $id => $heading) {
-            $row[$heading] = $values[$id];
+        if (strpos($lines[$x], $command) !== false) {
+            $values = preg_split('/\s+/', $lines[$x]);
+            $row    = [];
+            foreach ($headings as $id => $heading) {
+                $row[$heading] = $values[$id];
+            }
+            $pids[] = $row['PID'];
         }
-        $pids[] = $row['PID'];
-
     }
     return $pids;
 }
@@ -110,17 +112,4 @@ function deleteFilePid($tmpPath)
 function setFilePid($tmpPath, $pid)
 {
     file_put_contents($tmpPath, $pid);
-}
-
-function quitIfRunningAlready2()
-{
-    $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
-    $pid      = getmypid();
-    $tmpPath  = "/tmp/{$fileName}.pid";
-    file_put_contents($tmpPath, $pid);
-    while (true) {
-        print "yes";
-        sleep(1);
-    }
-
 }
