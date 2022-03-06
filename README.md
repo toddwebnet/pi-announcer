@@ -1,3 +1,9 @@
+#Raspberry Pi Text To Speech
+A collection of scripts and api that will 
+create a platform to play text to speech on a raspberry pi
+from internal or remote code execution
+---
+
 Tested on Raspberry Pi 4 with 64 bit Rasberry pi os (with desktop)
 
 ```bash 
